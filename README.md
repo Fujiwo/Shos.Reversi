@@ -1,0 +1,2 @@
+# Shos.Reversi
+Reversi

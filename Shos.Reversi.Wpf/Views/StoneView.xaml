@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="Shos.Reversi.Wpf.Views.StoneView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="NormalStrokeBrush" Color="#003200"/>
+        <SolidColorBrush x:Key="HoverStrokeBrush" Color="DarkGreen"/>
+        <SolidColorBrush x:Key="NormalFillBrush" Color="Green"/>
+        <SolidColorBrush x:Key="HoverFillBrush" Color="ForestGreen"/>
+        <Style x:Key="HoverRectangleStyle" TargetType="{x:Type Rectangle}">
+            <Setter Property="Stroke" Value="{StaticResource NormalStrokeBrush}"/>
+            <Setter Property="Fill" Value="{StaticResource NormalFillBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="{StaticResource HoverStrokeBrush}"/>
+                    <Setter Property="Fill" Value="{StaticResource HoverFillBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HoverEllipseStyle" TargetType="{x:Type Ellipse}">
+            <Setter Property="Stroke" Value="{StaticResource NormalStrokeBrush}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="{StaticResource HoverStrokeBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="6*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.RowSpan="8" Grid.ColumnSpan="8" StrokeThickness="2" Style="{StaticResource HoverRectangleStyle}" />
+        <Button Grid.Row="1" Grid.Column="1" Command="{Binding Clicked}" >
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Ellipse StrokeThickness="2" Stroke="{Binding StrokeColor}" Fill="{Binding FillColor}" Style="{StaticResource HoverEllipseStyle}" />
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</UserControl>

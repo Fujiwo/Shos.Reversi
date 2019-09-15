@@ -1,0 +1,3 @@
+﻿1>------ ビルド開始: プロジェクト: Shos.Reversi.Runner, 構成: Debug Any CPU ------
+1>Shos.Reversi.Runner -> G:\Dropbox\Source\GitHub\Repos\Shos.Reversi\Shos.Reversi.Runner\bin\Debug\netcoreapp2.2\Shos.Reversi.Runner.dll
+========== ビルド: 1 正常終了、0 失敗、1 更新不要、0 スキップ ==========
