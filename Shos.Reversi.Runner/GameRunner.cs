@@ -1,4 +1,4 @@
-﻿#define LoggingOn
+﻿//#define LoggingOn
 #define MLPlayer
 
 using System;
@@ -16,7 +16,7 @@ namespace Shos.Reversi.Runner
 #if MLPlayer
         const string modelPath  = @"Data\MLModel.zip";
 #endif // MLPlayer
-        const int    playCount  = 100;
+        const int    playCount  = 30000;
 
 #if MLPlayer
         //Game        game        = new Game(() => new MLPlayer(modelPath), () => new MLPlayer(modelPath));
@@ -69,11 +69,7 @@ namespace Shos.Reversi.Runner
             gameHistory.End(winner);
         }
 
-        void OnGameUpdate(Stone.StoneState state/*, TableIndex index*/)
-        {
-            Log($"[{game.Board.BlackAndWhiteStoneNumber}]{state}");
-            gameHistory.Add(game.Board, state/*, index*/);
-        }
+        void OnGameUpdate(Stone.StoneState state) => gameHistory.Add(game.Board, state);
 
 #if LoggingOn
         void Log(string text) => Console.WriteLine(text);

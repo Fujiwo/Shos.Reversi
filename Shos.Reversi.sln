@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shos.ReversiML.Model", "Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shos.ReversiML.ConsoleApp", "Shos.ReversiML.ConsoleApp\Shos.ReversiML.ConsoleApp.csproj", "{5061DA1E-FB72-4C35-9208-F695D9066580}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shos.Reversi.AI", "Shos.Reversi.AI\Shos.Reversi.AI.csproj", "{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{5061DA1E-FB72-4C35-9208-F695D9066580}.Release|x64.Build.0 = Release|Any CPU
 		{5061DA1E-FB72-4C35-9208-F695D9066580}.Release|x86.ActiveCfg = Release|Any CPU
 		{5061DA1E-FB72-4C35-9208-F695D9066580}.Release|x86.Build.0 = Release|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Debug|x64.Build.0 = Debug|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Debug|x86.Build.0 = Debug|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Release|x64.ActiveCfg = Release|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Release|x64.Build.0 = Release|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F10E223-D70A-4D04-AB6F-4F0D0032CED0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

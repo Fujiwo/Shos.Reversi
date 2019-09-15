@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Fujio Kojima</Authors>
+    <Company>Sho's Software</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shos.Reversi.Core\Shos.Reversi.Core.csproj" />
+  </ItemGroup>
+
+</Project>
