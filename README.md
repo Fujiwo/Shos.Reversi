@@ -1,2 +1,2 @@
 # Shos.Reversi
-Reversi
+Reversi (Board Game) 
