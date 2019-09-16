@@ -15,7 +15,7 @@ namespace Shos.Reversi.Core
 
         public void Dispose() => Reset();
 
-        public abstract Task<TableIndex> Turn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes);
+        public abstract Task<TableIndex> Turn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes);
 
         public virtual void OnSelectStone(Board board, TableIndex index)
         {}
@@ -27,21 +27,21 @@ namespace Shos.Reversi.Core
     {
         public int Delay { get; set; } = 1000;
 
-        public async override Task<TableIndex> Turn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes)
+        public async override Task<TableIndex> Turn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
             if (Delay > 0)
                 await Task.Delay(Delay);
-            return OnTurn(board, state, indexes);
+            return OnTurn(board, myState, indexes);
         }
 
-        protected abstract TableIndex OnTurn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes);
+        protected abstract TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes);
     }
 
     public class RandomComputerPlayer : ComputerPlayer
     {
         static Random random = new Random();
 
-        protected override TableIndex OnTurn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes)
+        protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
             var indexList = indexes.ToList();
             return indexList[random.Next(indexList.Count())];
@@ -56,7 +56,7 @@ namespace Shos.Reversi.Core
 
         public HumanPlayer() => Name = "Human";
 
-        public async override Task<TableIndex> Turn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes)
+        public async override Task<TableIndex> Turn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
             Interlocked.Exchange(ref this.indexes, indexes.ToList());
             await Wait();

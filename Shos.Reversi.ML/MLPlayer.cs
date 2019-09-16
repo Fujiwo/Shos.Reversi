@@ -25,13 +25,13 @@ namespace Shos.Reversi.ML
             predictionEngine = null;
         }
 
-        protected override TableIndex OnTurn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes)
+        protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
             var bestPrediction = (index: new TableIndex(), prediction: float.MinValue);
             indexes.ForEach(index => {
                 var temporaryBoard = board.Clone();
-                temporaryBoard.TurnOverWith(index, state);
-                var inputData = CreateInput(temporaryBoard, state/*, index*/);
+                temporaryBoard.TurnOverWith(index, myState);
+                var inputData = CreateInput(temporaryBoard, myState);
                 var outputData = predictionEngine.Predict(inputData);
                 if (outputData.Prediction > bestPrediction.prediction)
                     bestPrediction = (index, outputData.Prediction);
@@ -39,7 +39,7 @@ namespace Shos.Reversi.ML
             return bestPrediction.index;
         }
 
-        ModelInput CreateInput(Board board, Stone.StoneState myState/*, TableIndex index*/)
+        ModelInput CreateInput(Board board, Stone.StoneState myState)
             => new ModelInput {
                 Cell00 = ToCell(myState, board, 0, 0),
                 Cell01 = ToCell(myState, board, 0, 1),

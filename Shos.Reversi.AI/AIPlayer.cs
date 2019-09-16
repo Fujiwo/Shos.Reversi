@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace Shos.Reversi.AI
 {
@@ -9,6 +7,24 @@ namespace Shos.Reversi.AI
 
     public class AIPlayer : ComputerPlayer
     {
+        class ScoreTable
+        {
+            readonly int[,] scores = new int[Board.RowNumber, Board.ColumnNumber] {
+                { 100, -50,  10,   0,   0,  10, -50, 100 },
+                { -50, -70, - 5, -10, -10, - 5, -70, -50 },
+                {  10, - 5, -10, - 5, - 5, -10, - 5,  10 },
+                {   0, -10, - 5,   0,   0, - 5, -10,   0 },
+                {   0, -10, - 5,   0,   0, - 5, -10,   0 },
+                {  10, - 5, -10, - 5, - 5, -10, - 5,  10 },
+                { -50, -70, - 5, -10, -10, - 5, -70, -50 },
+                { 100, -50,  10,   0,   0,  10, -50, 100 }
+            };
+
+            public int this[TableIndex index] => scores.Get(index);
+        }
+
+        static readonly ScoreTable scoreTable = new ScoreTable();
+
         public AIPlayer()
         {
         }
@@ -17,9 +33,60 @@ namespace Shos.Reversi.AI
         {
         }
 
-        protected override TableIndex OnTurn(Board board, Stone.StoneState state, IEnumerable<TableIndex> indexes)
+        protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
-            return indexes.First();
+            var bestScore = (index: new TableIndex(), score: int.MinValue);
+            indexes.ForEach(index => {
+                var temporaryBoard = board.Clone();
+                temporaryBoard.TurnOverWith(index, myState);
+                var score = GetScore(temporaryBoard, myState);
+                if (score > bestScore.score)
+                    bestScore = (index, score);
+            });
+            return bestScore.index;
+        }
+
+        (TableIndex, int) GetMinimumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
+        {
+            var bestScore = (index: new TableIndex(), score: int.MaxValue);
+            indexes.ForEach(index => {
+                var temporaryBoard = board.Clone();
+                temporaryBoard.TurnOverWith(index, myState);
+                var score = GetScore(temporaryBoard, myState);
+                if (score < bestScore.score)
+                    bestScore = (index, score);
+            });
+            return bestScore;
+        }
+
+        (TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
+        {
+            var bestScore = (index: new TableIndex(), score: int.MinValue);
+            indexes.ForEach(index => {
+                var temporaryBoard = board.Clone();
+                temporaryBoard.TurnOverWith(index, myState);
+                var score = GetScore(temporaryBoard, myState);
+                if (score > bestScore.score)
+                    bestScore = (index, score);
+            });
+            return bestScore;
+        }
+
+        static int GetScore(Board board, Stone.StoneState myState) => GetScoreWithScoreTable(board, myState);
+
+        static int GetScoreWithScoreTable(Board board, Stone.StoneState myState)
+        {
+            var enemyState = Stone.GetReverseState(myState);
+            var myScore    = 0;
+            var enemyScore = 0;
+            foreach (var index in board.AllIndexes) {
+                var cellState = board[index].State;
+                if      (cellState == myState   )
+                    myScore += scoreTable[index];
+                else if (cellState == enemyState)
+                    enemyScore += scoreTable[index];
+            }
+            return myScore - enemyScore;
         }
     }
 }

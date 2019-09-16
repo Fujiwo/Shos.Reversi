@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Shos.Reversi.AI\Shos.Reversi.AI.csproj" />
     <ProjectReference Include="..\Shos.Reversi.Core\Shos.Reversi.Core.csproj" />
     <ProjectReference Include="..\Shos.Reversi.ML\Shos.Reversi.ML.csproj" />
   </ItemGroup>
