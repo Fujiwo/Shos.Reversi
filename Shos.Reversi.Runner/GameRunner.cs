@@ -16,7 +16,7 @@ namespace Shos.Reversi.Runner
 #if MLPlayer
         const string modelPath  = @"Data\MLModel.zip";
 #endif // MLPlayer
-        const int    playCount  = 30000;
+        const int    playCount  = 1000;
 
 #if MLPlayer
         //Game        game        = new Game(() => new MLPlayer(modelPath), () => new MLPlayer(modelPath));

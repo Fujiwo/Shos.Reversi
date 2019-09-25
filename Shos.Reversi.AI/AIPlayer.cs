@@ -35,32 +35,19 @@ namespace Shos.Reversi.AI
 
         protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
-            var bestScore = (index: new TableIndex(), score: int.MinValue);
-            indexes.ForEach(index => {
-                var temporaryBoard = board.Clone();
-                temporaryBoard.TurnOverWith(index, myState);
-                var score = GetScore(temporaryBoard, myState);
-                if (score > bestScore.score)
-                    bestScore = (index, score);
-            });
-            return bestScore.index;
+            var (index, _) = GetMaximumScore(board, myState, indexes);
+            return index;
         }
 
-        (TableIndex, int) GetMinimumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
+        void DoTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes = null)
         {
-            var bestScore = (index: new TableIndex(), score: int.MaxValue);
-            indexes.ForEach(index => {
-                var temporaryBoard = board.Clone();
-                temporaryBoard.TurnOverWith(index, myState);
-                var score = GetScore(temporaryBoard, myState);
-                if (score < bestScore.score)
-                    bestScore = (index, score);
-            });
-            return bestScore;
+            var (index, _) = GetMaximumScore(board, myState, indexes);
+            board.TurnOverWith(index, myState);
         }
 
-        (TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
+        (TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes = null)
         {
+            indexes       = indexes ?? board.CanTurnOverIndexes(myState);
             var bestScore = (index: new TableIndex(), score: int.MinValue);
             indexes.ForEach(index => {
                 var temporaryBoard = board.Clone();
