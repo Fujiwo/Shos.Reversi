@@ -141,6 +141,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shos.Reversi.AI\Shos.Reversi.AI.csproj">
+      <Project>{4f10e223-d70a-4d04-ab6f-4f0d0032ced0}</Project>
+      <Name>Shos.Reversi.AI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shos.Reversi.Core\Shos.Reversi.Core.csproj">
       <Project>{56fdd962-0726-429d-a7a2-9eacc2e70b54}</Project>
       <Name>Shos.Reversi.Core</Name>

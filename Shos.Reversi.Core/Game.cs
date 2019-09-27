@@ -11,24 +11,24 @@ namespace Shos.Reversi.Core
 
     public class Game : BindableBase
     {
-        public event Action                   Start ;
-        public event Action<Stone.StoneState> Update;
-        public event Action<Stone.StoneState> End   ;
+        public event Action?                   Start ;
+        public event Action<Stone.StoneState>? Update;
+        public event Action<Stone.StoneState>? End   ;
 
         public enum GameMode { ComputerVsComputer, HumanVsComputer, HumanVsHuman };
 
         public const int PlayerNumber = 2;
 
         GameMode mode                                 = GameMode.ComputerVsComputer;
-        Board    board                                = null;
+        Board    board                                = new Board();
         int      delay                                = 0;
         static Dictionary<string, int> winninngCounts = new Dictionary<string, int>();
 
         public int PlayCount { get; set; } = 0;
         public static int WinninngCount(Player player) => winninngCounts[player.Name];
 
-        Func<ComputerPlayer> createPlayer1 = null;
-        Func<ComputerPlayer> createPlayer2 = null;
+        readonly Func<ComputerPlayer>? createPlayer1;
+        readonly Func<ComputerPlayer>? createPlayer2;
 
         public GameMode Mode {
             get => mode;
@@ -50,9 +50,9 @@ namespace Shos.Reversi.Core
 
         public Stone CurrentStone { get; }  = new Stone();
 
-        public Player[] Players = null;
+        public Player[] Players = new Player[PlayerNumber];
 
-        Player currentPlayer = null;
+        Player currentPlayer;
 
         public Player CurrentPlayer {
             get         => currentPlayer;
@@ -66,17 +66,19 @@ namespace Shos.Reversi.Core
             private set => SetProperty(ref isPlaying, value);
         }
 
-        public Game(Func<ComputerPlayer> createPlayer1 = null, Func<ComputerPlayer> createPlayer2 = null)
+        public Game(Func<ComputerPlayer>? createPlayer1 = null, Func<ComputerPlayer>? createPlayer2 = null)
         {
             this.createPlayer1 = createPlayer1;
             this.createPlayer2 = createPlayer2;
+            currentPlayer      = Players[0];
+
             Intialize();
         }
 
         public Player GetPlayer(Stone.StoneState state) => GetPlayer(ToCoset(state));
         public Player GetPlayer(Coset playerIndex) => Players[playerIndex.Value];
 
-        public async void Play()
+        public async Task Play()
         {
             StartPlaying();
 
@@ -139,34 +141,17 @@ namespace Shos.Reversi.Core
 
         void InitializePlayers(GameMode mode)
         {
-            Players?.ForEach(player => player.Dispose());
-            Players = new Player[PlayerNumber];
+            Players.ForEach(player => player?.Dispose());
 
             switch (mode) {
-                case GameMode.ComputerVsComputer: {
-                        var player0   = createPlayer1 == null ? new RandomComputerPlayer() : createPlayer1();
-                        player0.Index = 0;
-                        player0.Name  = "Computer 1";
-                        player0.Delay = Delay;
-                        Players[0]    = player0;
-
-                        var player1   = createPlayer2 == null ? new RandomComputerPlayer() : createPlayer2();
-                        player1.Index = 1;
-                        player1.Name  = "Computer 2";
-                        player1.Delay = Delay;
-                        Players[1]    = player1;
-                    }
+                case GameMode.ComputerVsComputer:
+                    SetNewComputerPlayer(0, "Computer 1", createPlayer1);
+                    SetNewComputerPlayer(1, "Computer 2", createPlayer2);
                     break;
 
-                case GameMode.HumanVsComputer   : {
-                        Players[0] = new HumanPlayer { Index = 0, Name = "Human" };
-
-                        var player1   = createPlayer1 == null ? new RandomComputerPlayer() : createPlayer1();
-                        player1.Index = 1;
-                        player1.Name  = "Computer";
-                        player1.Delay = Delay;
-                        Players[1]    = player1;
-                    }
+                case GameMode.HumanVsComputer   :
+                    Players[0] = new HumanPlayer { Index = 0, Name = "Human" };
+                    SetNewComputerPlayer(1, "Computer", createPlayer1);
                     break;
 
                 case GameMode.HumanVsHuman      :
@@ -179,6 +164,15 @@ namespace Shos.Reversi.Core
             };
             Players.Shuffle();
             RaisePropertyChanged(nameof(Players));
+        }
+
+        void SetNewComputerPlayer(int index, string playerName, Func<ComputerPlayer>? createPlayer = null)
+        {
+            var player     = createPlayer == null ? new RandomComputerPlayer() : createPlayer();
+            player.Index   = index;
+            player.Name    = playerName;
+            player.Delay   = Delay;
+            Players[index] = player;
         }
 
         public void OnSelectStone(Board board, TableIndex index) => CurrentPlayer?.OnSelectStone(board, index);

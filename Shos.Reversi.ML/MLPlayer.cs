@@ -10,13 +10,13 @@ namespace Shos.Reversi.ML
 
     public class MLPlayer : ComputerPlayer
     {
-        MLContext mlContext = new MLContext();
-        PredictionEngine<ModelInput, ModelOutput> predictionEngine;
+        MLContext                                  mlContext = new MLContext();
+        PredictionEngine<ModelInput, ModelOutput>? predictionEngine;
 
         public MLPlayer(string modelPath)
         {
             ITransformer mlModel = mlContext.Model.Load(GetAbsolutePath(modelPath), out DataViewSchema inputSchema);
-            predictionEngine = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
+            predictionEngine     = mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
         }
 
         protected override void Reset()

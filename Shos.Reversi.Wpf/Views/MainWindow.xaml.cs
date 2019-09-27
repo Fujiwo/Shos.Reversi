@@ -1,4 +1,5 @@
 ﻿//#define MLPlayer
+#define AIPlayer
 using System.Windows;
 
 namespace Shos.Reversi.Wpf.Views
@@ -6,6 +7,8 @@ namespace Shos.Reversi.Wpf.Views
     using Shos.Reversi.Core;
 #if MLPlayer
     using Shos.Reversi.ML;
+#elif AIPlayer // MLPlayer
+    using Shos.Reversi.AI;
 #endif // MLPlayer
     using Shos.Reversi.Wpf.ViewModels;
 
@@ -14,6 +17,8 @@ namespace Shos.Reversi.Wpf.Views
 #if MLPlayer
         const string modelPath = @"Data\MLModel.zip";
         Game game = new Game(() => new MLPlayer(modelPath));
+#elif AIPlayer // MLPlayer
+        Game game = new Game(() => new AIPlayer());
 #else  // MLPlayer
         Game game = new Game();
 #endif // MLPlayer

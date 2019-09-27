@@ -7,7 +7,7 @@ namespace Shos.Reversi.Wpf.ViewModels
 
     class BoardViewModel
     {
-        public event Action<TableIndex, StoneViewModel> StoneClick;
+        public event Action<TableIndex, StoneViewModel>? StoneClick;
 
         StoneViewModel[, ] stoneViewModels = new StoneViewModel[Board.RowNumber, Board.ColumnNumber];
 

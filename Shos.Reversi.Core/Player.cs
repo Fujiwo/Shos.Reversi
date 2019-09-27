@@ -39,7 +39,7 @@ namespace Shos.Reversi.Core
 
     public class RandomComputerPlayer : ComputerPlayer
     {
-        static Random random = new Random();
+        static MersenneTwister random = new MersenneTwister();
 
         protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
@@ -50,9 +50,9 @@ namespace Shos.Reversi.Core
 
     public class HumanPlayer : Player
     {
-        IList<TableIndex> indexes   = null;
-        TableIndex        index;
-        SemaphoreSlim     semaphore = null;
+        IList<TableIndex>? indexes   = null;
+        TableIndex         index;
+        SemaphoreSlim?     semaphore = null;
 
         public HumanPlayer() => Name = "Human";
 
@@ -68,7 +68,7 @@ namespace Shos.Reversi.Core
             if (indexes != null && indexes.Contains(index)) {
                 Set(index);
                 Interlocked.Exchange(ref indexes, null);
-                semaphore.Release(releaseCount: 2);
+                semaphore?.Release(releaseCount: 2);
             }
         }
 

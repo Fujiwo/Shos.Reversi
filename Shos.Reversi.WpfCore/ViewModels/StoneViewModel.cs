@@ -9,7 +9,7 @@ namespace Shos.Reversi.Wpf.ViewModels
 
     class StoneViewModel : BindableBase
     {
-        public event Action<StoneViewModel> Click;
+        public event Action<StoneViewModel>? Click;
 
         readonly Game game;
 

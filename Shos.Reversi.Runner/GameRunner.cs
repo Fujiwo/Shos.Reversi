@@ -1,7 +1,8 @@
 ﻿//#define LoggingOn
-#define MLPlayer
+//#define MLPlayer
 
 using System;
+using System.Threading.Tasks;
 
 namespace Shos.Reversi.Runner
 {
@@ -16,7 +17,7 @@ namespace Shos.Reversi.Runner
 #if MLPlayer
         const string modelPath  = @"Data\MLModel.zip";
 #endif // MLPlayer
-        const int    playCount  = 1000;
+        const int    playCount  = 100;
 
 #if MLPlayer
         //Game        game        = new Game(() => new MLPlayer(modelPath), () => new MLPlayer(modelPath));
@@ -36,21 +37,17 @@ namespace Shos.Reversi.Runner
             game.End    += OnGameEnd   ;
         }
 
-        public void Run()
+        public async Task Run()
         {
             try {
                 for (var counter = 0; counter < playCount; counter++)
-                    game.Play();
+                    await game.Play();
             } catch (Exception ex) {
                 Log($"Error: {ex}");
             }
         }
 
-        public void Dispose()
-        {
-            gameHistory.Dispose();
-            gameHistory = null;
-        }
+        public void Dispose() => gameHistory.Dispose();
 
         void OnGameStart()
         {

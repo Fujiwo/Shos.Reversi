@@ -1,4 +1,6 @@
-﻿using Prism.Commands;
+﻿#nullable enable
+
+using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Windows.Media;
@@ -9,7 +11,7 @@ namespace Shos.Reversi.Wpf.ViewModels
 
     class StoneViewModel : BindableBase
     {
-        public event Action<StoneViewModel> Click;
+        public event Action<StoneViewModel>? Click;
 
         readonly Game game;
 

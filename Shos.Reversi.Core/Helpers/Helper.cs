@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Shos.Reversi.Core.Helpers
 {
     public static class HelperExtensions
     {
-        static Random random = new Random();
+        static MersenneTwister random = new MersenneTwister();
 
         public static void Shuffle<TElement>(this TElement[] @this)
         {

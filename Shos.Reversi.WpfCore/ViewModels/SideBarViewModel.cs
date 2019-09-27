@@ -108,7 +108,7 @@ namespace Shos.Reversi.Wpf.ViewModels
                 }
             };
             StoneViewModel = new StoneViewModel(Game, Game.CurrentStone);
-            StartClicked   = new DelegateCommand(() => Game.Play(), () => CanChangeMode).ObservesProperty(() => CanChangeMode);
+            StartClicked   = new DelegateCommand(async () => await Game.Play(), () => CanChangeMode).ObservesProperty(() => CanChangeMode);
         }
     }
 }

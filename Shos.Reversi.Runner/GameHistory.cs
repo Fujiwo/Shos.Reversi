@@ -110,7 +110,7 @@ namespace Shos.Reversi.Runner
         }
 
         int      allMoveCount = 0;
-        AllMoves allMoves     = null;
+        AllMoves allMoves     = new AllMoves();
         Stream   stream       = new FileStream(FileName, FileMode.Create);
 
         public void Start() => allMoves = new AllMoves();
@@ -121,7 +121,6 @@ namespace Shos.Reversi.Runner
 
             allMoves.SetWinner(winner);
             Save(stream, ++allMoveCount, allMoves).Wait();
-            allMoves = null;
         }
 
         public void Add(Board board, Stone.StoneState myState)

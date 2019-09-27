@@ -39,13 +39,13 @@ namespace Shos.Reversi.AI
             return index;
         }
 
-        void DoTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes = null)
+        void DoTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex>? indexes = null)
         {
             var (index, _) = GetMaximumScore(board, myState, indexes);
             board.TurnOverWith(index, myState);
         }
 
-        (TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes = null)
+        (TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex>? indexes = null)
         {
             indexes       = indexes ?? board.CanTurnOverIndexes(myState);
             var bestScore = (index: new TableIndex(), score: int.MinValue);
