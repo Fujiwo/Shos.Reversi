@@ -9,6 +9,7 @@ namespace Shos.Reversi.Runner
             Console.WriteLine($"Started at {DateTime.Now}.");
             using (var gameRunner = new GameRunner())
                 gameRunner.Run().Wait();
+
             Console.WriteLine($"Finished at {DateTime.Now}.");
             Console.ReadKey();
         }

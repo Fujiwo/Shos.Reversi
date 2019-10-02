@@ -6,12 +6,12 @@ namespace Shos.Reversi.ML
 {
     using Shos.Reversi.Core;
     using Shos.Reversi.Core.Helpers;
-    using Shos.ReversiML.Model.DataModels;
+    using Shos_ReversiML.Model;
 
     public class MLPlayer : ComputerPlayer
     {
-        MLContext                                  mlContext = new MLContext();
-        PredictionEngine<ModelInput, ModelOutput>? predictionEngine;
+        MLContext                                          mlContext = new MLContext();
+        readonly PredictionEngine<ModelInput, ModelOutput> predictionEngine;
 
         public MLPlayer(string modelPath)
         {
@@ -22,7 +22,7 @@ namespace Shos.Reversi.ML
         protected override void Reset()
         {
             predictionEngine?.Dispose();
-            predictionEngine = null;
+            //predictionEngine = null;
         }
 
         protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)

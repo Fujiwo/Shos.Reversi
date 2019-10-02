@@ -226,7 +226,7 @@ namespace Shos.Reversi.Runner
 
         static string GetFileName(int count) => $"Shos.Reversi.{count:D5}.csv";
 
-        static string FileName {
+        static string? FileName {
             get {
                 for (var count = 1; count < int.MaxValue; count++) {
                     var fileName = GetFileName(count);

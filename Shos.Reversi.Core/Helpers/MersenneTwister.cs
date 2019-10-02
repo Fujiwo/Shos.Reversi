@@ -75,12 +75,12 @@ namespace Shos.Reversi.Core.Helpers
 
         public virtual uint NextUInt(uint maxValue) => (uint)(this.GenerateUInt() / ((double)uint.MaxValue / maxValue));
 
-        public virtual uint NextUInt(uint minValue, uint maxValue) // throws ArgumentOutOfRangeException
-        {
-            if (minValue >= maxValue)
-                throw new ArgumentOutOfRangeException();
-            return (uint)(this.GenerateUInt() / ((double)uint.MaxValue / (maxValue - minValue)) + minValue);
-        }
+        //public virtual uint NextUInt(uint minValue, uint maxValue) // throws ArgumentOutOfRangeException
+        //{
+        //    if (minValue > maxValue)
+        //        throw new ArgumentOutOfRangeException();
+        //    return (uint)(this.GenerateUInt() / ((double)uint.MaxValue / (maxValue - minValue)) + minValue);
+        //}
 
         public override int Next() => Next(int.MaxValue);
 
@@ -94,7 +94,7 @@ namespace Shos.Reversi.Core.Helpers
             return (int)(this.NextDouble() * maxValue);
         }
 
-        public int Next(int minValue, int maxValue)
+        public new int Next(int minValue, int maxValue)
         {
             if (maxValue < minValue)
                 throw new ArgumentOutOfRangeException();
