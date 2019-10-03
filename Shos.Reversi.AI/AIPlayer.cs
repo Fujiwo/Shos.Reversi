@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shos.Reversi.AI
 {
@@ -35,36 +36,36 @@ namespace Shos.Reversi.AI
         {}
 
         protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
-        {
-            var (index, _) = GetMaximumScore(board, myState, indexes);
-            return index;
-        }
+            => GetMaximumScoreIndex(board, myState, indexes);
 
-        void DoTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex>? indexes = null)
-        {
-            var (index, _) = GetMaximumScore(board, myState, indexes);
-            board.TurnOverWith(index, myState);
-        }
+        //void DoTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex>? indexes = null)
+        //{
+        //    var (index, _) = GetMaximumScore(board, myState, indexes);
+        //    board.TurnOverWith(index, myState);
+        //}
 
-        (TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex>? indexes = null)
+        TableIndex GetMaximumScoreIndex(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
-            indexes              = indexes ?? board.CanTurnOverIndexes(myState);
-            //var bestScore = (index: new TableIndex(), score: int.MinValue);
+            const int  alpha     = int.MinValue;
+            const int  beta      = int.MaxValue;
+            const uint limit     = 3U;
+
             var bestScore        = int.MinValue;
             var bestScoreIndexes = new List<TableIndex>();
 
             indexes.ForEach(index => {
                 var temporaryBoard = board.Clone();
                 temporaryBoard.TurnOverWith(index, myState);
+
                 var enemyState = Stone.GetReverseState(myState);
+                var enemyIndexes = temporaryBoard.CanTurnOverIndexes(enemyState).ToList();
 
-                (TableIndex index, int score) enemyScore;
-                if (GetMaximumEnemyScore(temporaryBoard, enemyState, out enemyScore))
-                    temporaryBoard.TurnOverWith(enemyScore.index, enemyState);
-                var score = GetScore(temporaryBoard, myState);
+                var score = enemyIndexes.Count == 0
+                            ?  AlphaBeta(board, myState   , temporaryBoard.CanTurnOverIndexes(myState).ToList(), alpha, beta, limit - 1)
+                            : -AlphaBeta(board, enemyState, enemyIndexes                                       , alpha, beta, limit - 1);
+
                 if (score == bestScore) {
                     bestScoreIndexes.Add(index);
-                    Log?.Invoke($"bestScore: {bestScore}, ({bestScoreIndexes.Count})");
                 } else if (score > bestScore) {
                     bestScore = score;
                     bestScoreIndexes.Clear();
@@ -73,37 +74,87 @@ namespace Shos.Reversi.AI
             });
             var index = random.Next(bestScoreIndexes.Count);
             Debug.Assert(0 <= index && index < bestScoreIndexes.Count);
-            return (bestScoreIndexes[index], bestScore);
+            return bestScoreIndexes[index];
         }
-
-        bool GetMaximumEnemyScore(Board board, Stone.StoneState myState, out (TableIndex index, int score) enemyScore, IEnumerable<TableIndex>? indexes = null)
+         
+        int AlphaBeta(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes, int alpha, int beta, uint limit)
         {
-            indexes              = indexes ?? board.CanTurnOverIndexes(myState);
-            //var bestScore = (index: new TableIndex(), score: int.MinValue);
-            var bestScore        = int.MinValue;
-            var bestScoreIndexes = new List<TableIndex>();
+            if (limit == 0)
+                return GetScore(board, myState);
 
-            indexes.ForEach(index => {
+            foreach (var index in indexes) {
                 var temporaryBoard = board.Clone();
                 temporaryBoard.TurnOverWith(index, myState);
-                var score = GetScore(temporaryBoard, myState);
-                if (score == bestScore) {
-                    bestScoreIndexes.Add(index);
-                } else if (score > bestScore) {
-                    bestScore = score;
-                    bestScoreIndexes.Clear();
-                    bestScoreIndexes.Add(index);
-                }
-            });
-            if (bestScoreIndexes.Count == 0) {
-                enemyScore = (new TableIndex(), bestScore);
-                return false;
+                var enemyState   = Stone.GetReverseState(myState);
+                var enemyIndexes = temporaryBoard.CanTurnOverIndexes(enemyState).ToList();
+                if (enemyIndexes.Count == 0)
+                    return AlphaBeta(board, myState, temporaryBoard.CanTurnOverIndexes(myState).ToList(), alpha, beta, limit - 1);
+                var score = -AlphaBeta(board, enemyState, enemyIndexes, -beta, -alpha, limit - 1);
+                alpha = Math.Max(alpha, score);
+                if (alpha >= beta)
+                    return alpha;
             }
-            var index = random.Next(bestScoreIndexes.Count);
-            Debug.Assert(0 <= index && index < bestScoreIndexes.Count);
-            enemyScore = (bestScoreIndexes[index], bestScore);
-            return true;
+            return alpha;
         }
+
+        //(TableIndex, int) GetMaximumScore(Board board, Stone.StoneState myState, IEnumerable<TableIndex>? indexes = null)
+        //{
+        //    indexes = indexes ?? board.CanTurnOverIndexes(myState);
+        //    //var bestScore = (index: new TableIndex(), score: int.MinValue);
+        //    var bestScore        = int.MinValue;
+        //    var bestScoreIndexes = new List<TableIndex>();
+
+        //    indexes.ForEach(index => {
+        //        var temporaryBoard = board.Clone();
+        //        temporaryBoard.TurnOverWith(index, myState);
+        //        var enemyState = Stone.GetReverseState(myState);
+
+        //        (TableIndex index, int score) enemyScore;
+        //        if (GetMaximumEnemyScore(temporaryBoard, enemyState, out enemyScore))
+        //            temporaryBoard.TurnOverWith(enemyScore.index, enemyState);
+        //        var score = GetScore(temporaryBoard, myState);
+        //        if (score == bestScore) {
+        //            bestScoreIndexes.Add(index);
+        //            Log?.Invoke($"bestScore: {bestScore}, ({bestScoreIndexes.Count})");
+        //        } else if (score > bestScore) {
+        //            bestScore = score;
+        //            bestScoreIndexes.Clear();
+        //            bestScoreIndexes.Add(index);
+        //        }
+        //    });
+        //    var index = random.Next(bestScoreIndexes.Count);
+        //    Debug.Assert(0 <= index && index < bestScoreIndexes.Count);
+        //    return (bestScoreIndexes[index], bestScore);
+        //}
+
+        //bool GetMaximumEnemyScore(Board board, Stone.StoneState myState, out (TableIndex index, int score) enemyScore, IEnumerable<TableIndex>? indexes = null)
+        //{
+        //    indexes              = indexes ?? board.CanTurnOverIndexes(myState);
+        //    //var bestScore = (index: new TableIndex(), score: int.MinValue);
+        //    var bestScore        = int.MinValue;
+        //    var bestScoreIndexes = new List<TableIndex>();
+
+        //    indexes.ForEach(index => {
+        //        var temporaryBoard = board.Clone();
+        //        temporaryBoard.TurnOverWith(index, myState);
+        //        var score = GetScore(temporaryBoard, myState);
+        //        if (score == bestScore) {
+        //            bestScoreIndexes.Add(index);
+        //        } else if (score > bestScore) {
+        //            bestScore = score;
+        //            bestScoreIndexes.Clear();
+        //            bestScoreIndexes.Add(index);
+        //        }
+        //    });
+        //    if (bestScoreIndexes.Count == 0) {
+        //        enemyScore = (new TableIndex(), bestScore);
+        //        return false;
+        //    }
+        //    var index = random.Next(bestScoreIndexes.Count);
+        //    Debug.Assert(0 <= index && index < bestScoreIndexes.Count);
+        //    enemyScore = (bestScoreIndexes[index], bestScore);
+        //    return true;
+        //}
 
         static int[] scoreRateTable = new[] { 10, 100 };
 
