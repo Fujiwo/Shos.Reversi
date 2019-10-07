@@ -1,13 +1,13 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shos.Reversi.Core
 {
-    using Shos.Reversi.Core.Helpers;
+    using Helpers;
 
     public class Game : BindableBase
     {
@@ -125,7 +125,7 @@ namespace Shos.Reversi.Core
                 passCount++;
             } else {
                 var index = await Players[coset.Value].Turn(Board.Clone(), CurrentStone.State, canTurnOverIndexes);
-                Debug.Assert(canTurnOverIndexes.Contains(index));
+                Contract.Ensures(canTurnOverIndexes.Contains(index));
                 Board.TurnOverWith(index, CurrentStone.State);
                 Update?.Invoke(CurrentStone.State/*, index*/);
                 passCount = 0;

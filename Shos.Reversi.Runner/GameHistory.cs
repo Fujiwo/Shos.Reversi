@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System.Diagnostics.Contracts;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shos.Reversi.Runner
@@ -117,15 +117,14 @@ namespace Shos.Reversi.Runner
 
         public void End(Stone.StoneState winner)
         {
-            Debug.Assert(allMoves != null);
-
+            Contract.Requires(allMoves != null);
             allMoves.SetWinner(winner);
             Save(stream, ++allMoveCount, allMoves).Wait();
         }
 
         public void Add(Board board, Stone.StoneState myState)
         {
-            Debug.Assert(allMoves != null);
+            Contract.Requires(allMoves != null);
             allMoves.Add(ToMove(myState, board));
         }
 

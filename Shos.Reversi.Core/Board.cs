@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Shos.Reversi.Core
 {
-    using Shos.Reversi.Core.Helpers;
+    using Helpers;
 
     public class Board : BindableBase, ICloneable<Board>
     {

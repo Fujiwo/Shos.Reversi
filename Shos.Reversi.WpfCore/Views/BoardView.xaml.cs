@@ -7,8 +7,8 @@ using System.Windows.Shapes;
 namespace Shos.Reversi.Wpf.Views
 {
     using Shos.Reversi.Core.Helpers;
-    using Shos.Reversi.Wpf.ViewModels;
-    using Shos.Reversi.Wpf.Helpers;
+    using ViewModels;
+    using Helpers;
 
     public partial class BoardView : UserControl
     {

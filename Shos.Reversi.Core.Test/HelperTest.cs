@@ -1,9 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Shos.Reversi.Core.Test
 {
     using Shos.Reversi.Core.Helpers;
-    using System;
 
     [TestClass]
     public class HelperTest

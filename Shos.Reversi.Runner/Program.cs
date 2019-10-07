@@ -11,6 +11,10 @@ namespace Shos.Reversi.Runner
                 gameRunner.Run().Wait();
 
             Console.WriteLine($"Finished at {DateTime.Now}.");
+#if DEBUG
+            Console.WriteLine($"GettingScoreCount: {Shos.Reversi.AI.AIPlayer.GettingScoreCount}.");
+#endif // DEBUG
+
             Console.ReadKey();
         }
     }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Shos.Reversi.AI
 {
     using Shos.Reversi.Core;
     using Shos.Reversi.Core.Helpers;
-    using System.Diagnostics;
 
     public class AIPlayer : ComputerPlayer
     {
@@ -165,8 +165,16 @@ namespace Shos.Reversi.AI
         static int GetScoreWithStoneNumber(Board board, Stone.StoneState myState)
             => board.GetStoneNumber(myState);
 
+#if DEBUG
+        public static int GettingScoreCount = 0;
+#endif // DEBUG
+
         static int GetScoreWithScoreTable(Board board, Stone.StoneState myState)
         {
+#if DEBUG
+            GettingScoreCount++;
+#endif // DEBUG
+
             var enemyState = Stone.GetReverseState(myState);
             var myScore    = 0;
             var enemyScore = 0;

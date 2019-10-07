@@ -1,5 +1,6 @@
 ﻿//#define MLPlayer
 #define AIPlayer
+
 using System.Windows;
 
 namespace Shos.Reversi.Wpf.Views
@@ -10,7 +11,7 @@ namespace Shos.Reversi.Wpf.Views
 #elif AIPlayer // MLPlayer
     using Shos.Reversi.AI;
 #endif // MLPlayer
-    using Shos.Reversi.Wpf.ViewModels;
+    using ViewModels;
 
     public partial class MainWindow : Window
     {

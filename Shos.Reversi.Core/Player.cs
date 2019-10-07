@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shos.Reversi.Core
 {
-    using Shos.Reversi.Core.Helpers;
+    using Helpers;
 
     public abstract class Player : IDisposable
     {
