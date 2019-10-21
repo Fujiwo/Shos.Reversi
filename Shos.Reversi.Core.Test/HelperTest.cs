@@ -1,3 +1,4 @@
+using MathNet.Numerics.Random;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -66,24 +67,24 @@ namespace Shos.Reversi.Core.Test
         //    }
         //}
 
-        [TestMethod]
-        public void MersenneTwisterNextUIntWithMaximumTest()
-        {
-            const uint testRange = 100U;
-            const uint testCount = 1000U;
+        //[TestMethod]
+        //public void MersenneTwisterNextIntWithMaximumTest()
+        //{
+        //    const int testRange =  100;
+        //    const int testCount = 1000;
 
-            var random = new MersenneTwister();
+        //    var random = new MersenneTwister();
 
-            for (var counter = 0U; counter < testCount; counter++) {
-                var maximum = random.NextUInt(testRange - 1) + 1;
+        //    for (var counter = 0; counter < testCount; counter++) {
+        //        var maximum = random.Next(testRange - 1) + 1;
 
-                for (var c = 0U; c < testCount; c++) {
-                    var value = random.NextUInt(maximum);
-                    Assert.IsTrue(0 <= value);
-                    Assert.IsTrue(value < maximum);
-                }
-            }
-        }
+        //        for (var c = 0; c < testCount; c++) {
+        //            var value = random.Next(maximum);
+        //            Assert.IsTrue(0 <= value);
+        //            Assert.IsTrue(value < maximum);
+        //        }
+        //    }
+        //}
 
         [TestMethod]
         public void MersenneTwisterNextWithMinimumAndMaximumTest()
@@ -145,24 +146,24 @@ namespace Shos.Reversi.Core.Test
             Assert.IsTrue(true);
         }
 
-        [TestMethod]
-        public void MersenneTwisterNextUTest()
-        {
-            const uint testRange = 10U;
-            const uint testCount = 1000000000U;
+        //[TestMethod]
+        //public void MersenneTwisterNextUTest()
+        //{
+        //    const uint testRange = 10U;
+        //    const uint testCount = 1000000000U;
 
-            var random = new MersenneTwister();
-            var counts = new uint[testRange];
-            for (var counter = 0U; counter < testCount; counter++) {
-                //var value = random.NextUInt(0, testRange);
-                //Assert.IsTrue(0U <= value && value < testRange);
-                //counts[value]++;
-                var value = random.NextUInt(testRange);
-                Assert.IsTrue(0U <= value && value < testRange);
-                counts[value]++;
-            }
-            Assert.IsTrue(true);
-        }
+        //    var random = new MersenneTwister();
+        //    var counts = new uint[testRange];
+        //    for (var counter = 0U; counter < testCount; counter++) {
+        //        //var value = random.NextUInt(0, testRange);
+        //        //Assert.IsTrue(0U <= value && value < testRange);
+        //        //counts[value]++;
+        //        var value = random.NextUInt(testRange);
+        //        Assert.IsTrue(0U <= value && value < testRange);
+        //        counts[value]++;
+        //    }
+        //    Assert.IsTrue(true);
+        //}
 
         static void Sort<T>(ref T value1, ref T value2) where T : IComparable<T>
         {

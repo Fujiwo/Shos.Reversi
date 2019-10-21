@@ -175,7 +175,7 @@ namespace Shos.Reversi.Core
             Players[index] = player;
         }
 
-        public void OnSelectStone(Board board, TableIndex index) => CurrentPlayer?.OnSelectStone(board, index);
+        public void OnSelectStone(TableIndex index) => CurrentPlayer?.OnSelectStone(board, index);
 
         static Stone.StoneState ToStoneState(Coset coset)
             => coset.Value switch  {

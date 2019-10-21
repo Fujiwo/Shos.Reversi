@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.Random;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -44,7 +45,7 @@ namespace Shos.Reversi.Core
         protected override TableIndex OnTurn(Board board, Stone.StoneState myState, IEnumerable<TableIndex> indexes)
         {
             var indexList = indexes.ToList();
-            return indexList[random.Next(indexList.Count())];
+            return indexList[random.Next(indexList.Count)];
         }
     }
 

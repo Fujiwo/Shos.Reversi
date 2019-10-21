@@ -1,5 +1,5 @@
 ﻿//#define MLPlayer
-#define AIPlayer
+//#define AIPlayer
 
 using System.Windows;
 
@@ -41,7 +41,7 @@ namespace Shos.Reversi.Wpf.Views
         void SetDataContext()
         {
             var boardViewModel = new BoardViewModel(game);
-            boardViewModel.StoneClick += (index, stoneViewModel) => game.OnSelectStone(game.Board, index);
+            boardViewModel.StoneClick += (index, stoneViewModel) => game.OnSelectStone(index);
             boardView.DataContext = boardViewModel;
             sideBar  .DataContext = new SideBarViewModel(game);
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MathNet.Numerics.Random;
+using System.Collections.Generic;
 
 namespace Shos.Reversi.Core.Helpers
 {

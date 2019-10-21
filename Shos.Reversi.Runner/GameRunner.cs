@@ -1,6 +1,6 @@
 ﻿//#define LoggingOn
 //#define MLPlayer
-#define AIPlayer
+//#define AIPlayer
 
 using System;
 using System.Threading.Tasks;

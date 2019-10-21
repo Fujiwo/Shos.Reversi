@@ -12,27 +12,6 @@ namespace Shos.Reversi.Wpf.ViewModels
 
     class SideBarViewModel : BindableBase
     {
-        GameSpeed gameSpeed = GameSpeed.Slow;
-
-        GameSpeed ToGameSpeed(int delay)
-            =>  delay switch  {
-                var x when x <=    0 => GameSpeed.VeryFast,
-                var x when x <=    1 => GameSpeed.Fast    ,
-                var x when x <=  100 => GameSpeed.Medium  ,
-                var x when x <= 1000 => GameSpeed.Slow    ,
-                _                    => GameSpeed.VerySlow
-            };
-
-        int ToDelay(GameSpeed gameSpeed)
-            => gameSpeed switch  {
-                GameSpeed.VeryFast =>    0,
-                GameSpeed.Fast     =>    1,
-                GameSpeed.Medium   =>  100,
-                GameSpeed.Slow     => 1000,
-                GameSpeed.VerySlow => 2000,
-                _                  => throw new InvalidOperationException()
-            };
-
         public Game Game { get; private set; }
 
         public StoneViewModel StoneViewModel      { get; private set; }
@@ -46,11 +25,8 @@ namespace Shos.Reversi.Wpf.ViewModels
         }
 
         public GameSpeed GameSpeed {
-            get => gameSpeed;
-            set {
-                SetProperty(ref gameSpeed, value);
-                Game.Delay = ToDelay(value);
-            }
+            get => ToGameSpeed(Game.Delay);
+            set => Game.Delay = ToDelay(value);
         }
 
         public string PlayerName => Game?.CurrentPlayer?.Name ?? "";
@@ -94,7 +70,7 @@ namespace Shos.Reversi.Wpf.ViewModels
                         RaisePropertyChanged(nameof(PlayerName          ));
                         break;
                     case nameof(game.Delay        ):
-                        GameSpeed = ToGameSpeed(game.Delay);
+                        RaisePropertyChanged(nameof(GameSpeed           ));
                         break;
                 }
             };
@@ -110,5 +86,22 @@ namespace Shos.Reversi.Wpf.ViewModels
             StoneViewModel = new StoneViewModel(Game, Game.CurrentStone);
             StartClicked   = new DelegateCommand(async () => await Game.Play(), () => CanChangeMode).ObservesProperty(() => CanChangeMode);
         }
+
+        GameSpeed ToGameSpeed(int delay) => delay switch {
+                var x when x <=    0 => GameSpeed.VeryFast,
+                var x when x <=    1 => GameSpeed.Fast    ,
+                var x when x <=  100 => GameSpeed.Medium  ,
+                var x when x <= 1000 => GameSpeed.Slow    ,
+                _                    => GameSpeed.VerySlow
+            };
+
+        int ToDelay(GameSpeed gameSpeed) => gameSpeed switch {
+            GameSpeed.VeryFast =>    0,
+            GameSpeed.Fast     =>    1,
+            GameSpeed.Medium   =>  100,
+            GameSpeed.Slow     => 1000,
+            GameSpeed.VerySlow => 2000,
+            _                  => throw new InvalidOperationException()
+        };
     }
 }
